@@ -1,33 +1,39 @@
 #include "blockchain.h"
-#define GENESIS_TIMESTAMP 1537578000
-#define GENESIS_DATA "Holberton School"
-#define GENESIS_DATA_LEN 16
-#define GENESIS_HASH "\xc5\x2c\x26\xc8\xb5\x46\x16\x39\x63\x5d\x8e\xdf\x2a\x97\xd4\x8d\x0c\x8e\x00\x09\xc8\x17\xf2\xb1\xd3\xd7\xff\x2f\x04\x51\x58\x03"
 
+/**
+ * blockchain_create - create a block chain structure
+ * Return: a new blockchain structure
+ */
 blockchain_t *blockchain_create(void)
 {
-	blockchain_t *chain = calloc(1, sizeof(*chain));
-	block *block = calloc(1, sizeof(*block));
-	llist *list = llist_create(MT_SUPPORT_TRUE);
+block_t const _genesis = GENESIS_BLOCK;
 
-	if (!chain || !block || !list)
-	{
-		free(chain), free(block), llist_destroy(list, 1, NULL);
-		perror("memory allocation failed");
-		return (NULL);
-	}
+blockchain_t *blockchain;
+block_t *ptr;
+ptr = (block_t *) malloc(sizeof(block_t));
+memcpy(ptr, (block_t *) &_genesis, sizeof(block_t));
+blockchain = (blockchain_t *) malloc(sizeof(blockchain_t));
+blockchain->chain = llist_create(MT_SUPPORT_TRUE);
+if (llist_add_node(blockchain->chain, ptr, ADD_NODE_FRONT) != 0)
+return (NULL);
+return (blockchain);
+}#include "blockchain.h"
 
-	block->info.timestamp = GENESIS_TIMESTAMP;
-	memcpy(&(block->data.buffer), GENESIS_DATA, GENESIS_DATA_LEN);
-	block->data.len = GENESIS_DATA_LEN;
-	memcpy(&(block->hash), GENESIS_HASH, SHA256_DIGEST_LENGTH);
-	if (llist_add_node(list, block, ADD_NODE_FRONT))
-	{
-		perror("failed to add node to the list");
-		free(chain), free(block), llist_destroy(list, 1, NULL);
-		return (NULL);
-	}
+/**
+ * blockchain_create - create a block chain structure
+ * Return: a new blockchain structure
+ */
+blockchain_t *blockchain_create(void)
+{
+block_t const _genesis = GENESIS_BLOCK;
 
-	chain->chain = list;
-	return (chain);
+blockchain_t *blockchain;
+block_t *ptr;
+ptr = (block_t *) malloc(sizeof(block_t));
+memcpy(ptr, (block_t *) &_genesis, sizeof(block_t));
+blockchain = (blockchain_t *) malloc(sizeof(blockchain_t));
+blockchain->chain = llist_create(MT_SUPPORT_TRUE);
+if (llist_add_node(blockchain->chain, ptr, ADD_NODE_FRONT) != 0)
+return (NULL);
+return (blockchain);
 }
