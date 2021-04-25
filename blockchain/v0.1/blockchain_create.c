@@ -8,9 +8,9 @@ blockchain_t *blockchain_create(void)
 {
 	blockchain_t *chain = calloc(1, sizeof(*chain));
 	block *block = calloc(1, sizeof(*block));
-	llist *list= llist_create(MT_SUPPORT_TRUE);
+	llist *list = llist_create(MT_SUPPORT_TRUE);
 
-	if(!chain || !block || !list)
+	if (!chain || !block || !list)
 	{
 		free(chain), free(block), llist_destroy(list, 1, NULL);
 		perror("memory allocation failed");
@@ -29,5 +29,5 @@ blockchain_t *blockchain_create(void)
 	}
 
 	chain->chain = list;
-	retun (chain);
+	return (chain);
 }
